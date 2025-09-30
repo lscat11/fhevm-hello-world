@@ -73,12 +73,15 @@ contract FHERPS is SepoliaConfig {
     }
 
     function decryptTopWinner() external {
+        require(is_decrypting == false);
+
+        is_decrypting = true;
         _decrypt_request_block = block.number;
 
         bytes32[] memory cts = new bytes32[](2);
         cts[0] = FHE.toBytes32(_top_winner_address);
         cts[1] = FHE.toBytes32(_top_win_amount);
-        FHE.requestDecryption(cts, this.resolveTopWinnerCallback.selector);
+        _decrypt_request_id = FHE.requestDecryption(cts, this.resolveTopWinnerCallback.selector);
     }
 
     function resolveTopWinnerCallback(
@@ -86,12 +89,14 @@ contract FHERPS is SepoliaConfig {
         bytes memory cleartexts,
         bytes memory decryptionProof
     ) external {
+        require(requestId == _decrypt_request_id, "Invalid requestId");
         FHE.checkSignatures(requestId, cleartexts, decryptionProof);
 
         (address resultTopWinnerAddress, uint64 resultTopWinAmount) = abi.decode(cleartexts, (address, uint64));
         clear_top_winner_address = resultTopWinnerAddress;
         clear_top_win_amount = resultTopWinAmount;
         latest_decrypt_block = _decrypt_request_block;
+        is_decrypting = false;
     }
 
     function getWinLossTieStats(address user) external view returns (euint64, euint64, euint64) {
