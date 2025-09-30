@@ -7,20 +7,14 @@ In this tutorial, we will build FHE-RPS, a decentralized and confidential Rock-P
 
 **What You Will Learn**
 + How to write a Solidity smart contract that uses FHEVM for confidential game logic.
-
 + How to store and update encrypted player statistics (wins, losses, ties).
-
 + How to maintain a confidential leaderboard of the top player.
-
 + How to interact with the FHEVM contract from a testing environment to play the game with encrypted inputs.
-
 + How to deploy the contract on the Sepolia testnet.
-
 + How to develop a frontend to interact with the deployed contract.
 
 **Prerequisites**
 + A basic understanding of Solidity, smart contracts, and Hardhat.
-
 + Familiarity with JavaScript/TypeScript.
 
 ## Table of Contents
@@ -38,11 +32,8 @@ In this tutorial, we will build FHE-RPS, a decentralized and confidential Rock-P
 Rock-Paper-Scissors is a simple two-player game. Players simultaneously choose one move from the three options: Rock, Paper, or Scissors.
 The outcome of the game is determined by a simple set of rules:
 + Rock crushes Scissors (Rock wins)
-
 + Scissors cuts Paper (Scissors wins)
-
 + Paper covers Rock (Paper wins)
-
 + If both players choose the same move, it's a tie
 
 The simplicity of Rock-Paper-Scissors hinges on one key element: **simultaneous** and **secret action**. Both players must reveal their choices at the exact same moment. If one player knows the other's move in advance, they can always pick the winning move, making the game unfair.
@@ -55,13 +46,9 @@ Here's where FHE comes into play. FHE provides a way to compute the game result 
 **The FHE-RPS Game**
 
 In this tutorial, we will build a decentralized and confidential Rock-Paper-Scissors game dApp using FHEVM. For simplicity, we will assume that the game is played between one player and the smart contract. The game logic is as follows:
-
 1. The smart contract will pre-generate a move randomly and store it on chain. This pre-generated on-chain move will be updated after each play
-
 2. Everyone can submit their encrypted move to the smart contract to play and the smart contract will compare their move with the smart contract's on-chain move and determine the winner
-
 3. For each play, the smart contract will update the player's encrypted statistics (wins, losses, ties), and the player can decrypt their own statistics to see their progress. However, no one can see the other player's statistics.
-
 4. The smart contract will also maintain a encrypted leaderboard of the top player (the player with the most wins). Everyone can decrypt the leaderboard to see who is the top player.
 
 In the next section, we will prepare the develop environment and setup the project. Then we will walk through the process of writing the FHE-RPS smart contract, testing it and deploying it on the Sepolia testnet. In the final section, we will build a frontend to interact with the deployed contract.
@@ -75,12 +62,10 @@ In this project, we will use Hardhat, which is a popular development environment
 ```bash
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 ```
-
 2. install node (22.x):
 ```bash
 nvm install 22
 ```
-
 3. clone the hardhat template repo and install dependencies:
 ```bash
 git clone https://github.com/zama-ai/fhevm-hardhat-template
@@ -88,12 +73,10 @@ cd fhevm-hardhat-template
 git checkout dbc36dbce90b82fe82c3f85f9639684c710d282a
 npm install --force
 ```
-
 4. clean the hardhat template files:
 ```bash
 rm -f contracts/* deploy/* test/*
 ```
-
 5. setup the hardhat environment variables (optional, required for deploying to the Sepolia testnet):
 ```bash
 npx hardhat vars set MNEMONIC <your mnemonic>
