@@ -73,9 +73,7 @@ describe("FHERps", function () {
 
     const [encryptedWin, encryptedLoss, encryptedTie] = await fheRpsContract.getWinLossTieStats(signers.alice);
     console.log(`${encryptedWin}`);
-    if (encryptedWin == ethers.ZeroHash.toString()) {
-      console.log(`equal ${encryptedWin}`);
-    }
+
     const clearWin = await fhevm.userDecryptEuint(
       FhevmType.euint64,
       encryptedWin,
